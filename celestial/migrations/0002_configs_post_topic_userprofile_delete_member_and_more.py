@@ -68,7 +68,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='topic',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.SET_DEFAULT, to='core.topic'),
+            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.SET_DEFAULT, to='celestial.topic'),
         ),
         migrations.AddField(
             model_name='post',

@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from core.models import *
+from celestial.models import *
 
 class PostModelAdmin(admin.ModelAdmin):
     list_display: list = ['shown_name','prompt', 'updated', 'created_on', 'publish', 'draft']

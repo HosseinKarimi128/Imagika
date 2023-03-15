@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='highscorequeue',
             name='post',
-            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='core.post'),
+            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='celestial.post'),
         ),
         migrations.AlterField(
             model_name='lowscorequeue',
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lowscorequeue',
             name='post',
-            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='core.post'),
+            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='celestial.post'),
         ),
         migrations.AlterField(
             model_name='midscorequeue',
@@ -59,6 +59,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='midscorequeue',
             name='post',
-            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='core.post'),
+            field=models.OneToOneField(default=0, on_delete=django.db.models.deletion.CASCADE, to='celestial.post'),
         ),
     ]

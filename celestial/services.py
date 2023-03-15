@@ -1,8 +1,8 @@
 import random
 from typing import Tuple
 from django.contrib.auth.models import User
-from core.models import *
-from core.schema import *
+from celestial.models import *
+from celestial.schema import *
 from asgiref.sync import sync_to_async
 from django.db import transaction
 from django.dispatch import receiver

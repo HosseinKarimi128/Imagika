@@ -137,4 +137,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-SIGNALS = ['core.models.update_post_score',]
+SIGNALS = ['celestial.models.update_post_score',]

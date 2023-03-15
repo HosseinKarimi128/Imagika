@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from fastapi import HTTPException
 from passlib.context import CryptContext
-import core.schema as s
+import celestial.schema as s
 from contlika.settings import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
 
 import jwt 

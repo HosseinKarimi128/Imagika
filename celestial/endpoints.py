@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends, File, HTTPException, Security
 from fastapi.responses import FileResponse
 from django.contrib.auth.models import User
 from contlika.settings import STATIC_URL
-from core.models import UserProfile, Post, Topic
-from core.schema import *
-from core.auth import Auth
+from celestial.models import UserProfile, Post, Topic
+from celestial.schema import *
+from celestial.auth import Auth
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
-from core.services import *
+from celestial.services import *
 import logging
 
 #==============================================================
