@@ -1,17 +1,11 @@
 from django.db import models
-from datetime import date, datetime 
-from pathlib import Path 
+from datetime import date, datetime, timedelta 
 from django.conf import settings 
 from django.db import models
-from django.dispatch import receiver 
 from django.contrib.auth.models import User
 from typing import Any
 from django.db import models
 from celestial.managers import *
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from channels.db import database_sync_to_async
-from datetime import datetime as dt
 
 '''
 POST MDOELS: ===================================================================================
@@ -24,7 +18,8 @@ class Post(models.Model):
     prompt: str = models.TextField(default="Create a post.")
     n_prompt: str = models.TextField(null=True, blank=True)
     uploaded_image: str = models.UUIDField(null=True, default=None, editable=False)
-    generated_image: str = models.UUIDField(null=True,default=None, editable=False)
+    generated_images: str = models.TextField(default = '{}')
+    image: str = models.UUIDField(null=True, default=None, editable=False)
     draft: bool = models.BooleanField(default=True)
     publish: date = models.DateField(null=True, auto_now=False, auto_now_add=False)
     like_count: int = models.IntegerField(default=1)
@@ -69,28 +64,34 @@ class Post(models.Model):
     
     def get_interacted(self): return json.loads(self.interacted)
     def set_interacted(self,value): self.interacted = json.dumps(value)
-        
+
+    def get_generated_images(self): return json.loads(self.generated_images)
+    def set_generated_images(self,value): self.generated_images = json.dumps(value)
+
+
 
 '''
 TOPIC MDOELS: ===================================================================================
 '''
 #TODO: topic get list of titles. with just one start_on
-#TODO: active/inactive flag
 class Topic (models.Model):
     title: str = models.CharField(max_length=250, default=None)
     created_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=True)
-    strts_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    starts_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     finished_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
-    best_player: models.ForeignKey(settings.AUTH_USER_MODEL, default=1, null=True, on_delete=models.SET_DEFAULT, related_name="Topic")
+    active: bool = models.BooleanField(default = False)
+    
     objects = models.Manager()
 
     class Meta:
         verbose_name: str = "title"
         verbose_name_plural: str = "titles"
-        ordering: list = ["-strts_on", "title"]
+        ordering: list = ["-starts_on", "title"]
 
     def __str__(self) -> str:
         return f"{self.title}"
+    def set_finished_on(self):
+        self.finished_on = self.starts_on + timedelta.days(7)
 
 '''
 USER PROFILE MDOELS: ============================================================================

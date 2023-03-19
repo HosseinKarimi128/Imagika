@@ -8,117 +8,90 @@ from fastapi import UploadFile
 '''
 User Schemas ----------------------------------------------------------------------------------------------------
 '''
-    
-class BaseUser(BaseModel):
+class UserInSignUp(BaseModel):
     device_id: str
-
-class UserRegister(BaseUser):
     email: str
-    # @validator('device_id')
-    # def validate_device_id(cls, v):
-    #     if not re.match(r'^[A-Fa-f0-9]{8}$', v):
-    #         raise ValueError('Invalid device ID')
-    #     return v
     @validator('email')
     def validate_email(cls, v):
         if not re.match(r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$', v):
             raise ValueError('Invalid email address')
         return v
+
+class UserInLogin(BaseModel):
+    device_id: str
     
-class UserLoginOut(BaseUser):
-    access_token: str
-    refresh_token: str
+class UserOutLogin(BaseModel):
+    device_id: int
     shown_name: str
-    queue: Optional[Dict]
-'''
-Post Schemas -----------------------------------------------------------------------------------------------------
-''' 
+    token: str
+    refresh_token: str
 
-class PostBase(BaseModel):
-    user: int
-    title: str
-    class Config:
-        orm_mode = True
+class UserProfileOut(BaseModel):
+    device_id: int
+    shown_name: str
+    posts: Optional[Dict]
+    interacts: Optional[Dict]
 
-class CreatePost(BaseModel):
-    topic: int
-    prompt: str
-    n_prompt: Optional[str] = None
-    uploaded_image: Optional[UUID] = None
-
-class CreatePostOut(CreatePost):
-    id = int
-
-class UpdatePost(PostBase):
-    view_count: int
-    activPoste: bool
-
-class SinglePost(PostBase):
-    id: int
-
-class AllPostList(PostBase):
-    id: int
-    slug: str
-    draft: bool = False
-
-class ImagePost(BaseModel):
-    file_id: UUID
-    post_id: int
-    gnerated: bool
-
-class IntractPost(BaseModel):
+class UserInInteract(BaseModel):
     post_id: int
     isLike: bool
 
-class IntractOut(BaseModel):
-    post_id: int
-    liked_count: int
-    disliked_count: int
-    score: int
+class UserInCreatePost(BaseModel):
+    user_id: int
+    shown_name: str
+    prompt: str
+    n_prompt: str
+    image_id: UUID
+    topic: str
+
+class AdminInCreateTopic(BaseModel):
+    title: str
+    starts_on: datetime
 
 
 '''
-File Schemas -----------------------------------------------------------------------------------------------------
+Post Schemas -----------------------------------------------------------------------------------------------------
 ''' 
+class PostOut(BaseModel):
+    id: int
+    shown_name: str
+    draft: bool
+    images: List[UUID]
 
-class FileBase(BaseModel):
-    name = str
-    class Config:
-        orm_mode = True
+class PostForInteract(BaseModel):
+    id: int
+    isLike: bool
 
-class FileOut(FileBase):
-    guid: UUID
-    path: str
-    class Config:
-        orm_mode = True
+class PostForDaVinchi(BaseModel):
+    prompt: str
+    n_prompt: Optional[str]
+    image: UUID
 
-class FileForRespose(BaseModel):
-    post_id: UUID
+class PostFromDaVinchi(BaseModel):
+    images: List[UUID]
 
-class FileInResponse(BaseModel):
-    guid: UUID
+class PostForPublish(BaseModel):
+    id: int
+    image_number: int
+
+class TimelineOut(BaseModel):
+    queue: Optional[List[PostOut]]
+
 
 
 '''
 Topic Schemas -----------------------------------------------------------------------------------------------------
 ''' 
 
-class TopicInCreate(BaseModel):
+class TopicOut(BaseModel):
+    id: int
     title: str
 
-class TopicsInResponce(BaseModel):
-    titles: List[str]
-
-'''
-Queue Schemas -----------------------------------------------------------------------------------------------------
-''' 
-
-class QueueItem(BaseModel):
-    device_id: int
-    shown_name: str
-    post_id: int
-    image: Optional[str]
-
-class QueueOut(BaseModel):
-    count: int
-    queue: List[QueueItem]
+class TopicOutList(BaseModel):
+    items: List[TopicOut]
+    
+class TopicOutInCreate(BaseModel):
+    id: int
+    title: str
+    start_date: datetime
+    end_date: datetime
