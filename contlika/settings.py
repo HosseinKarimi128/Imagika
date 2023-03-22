@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 PROJECT_NAME = 'IMAGIKA'
-API_V1_STR: str = "/api/fa/v1"
+API_V1_STR: str = "/api/v1"
 WSGI_APP_URL: str = "/web"
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'celestial'
+    'celestial',
+    'davinchi'
 ]
 
 MIDDLEWARE = [
@@ -136,9 +137,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SIGNALS = ['celestial.models.update_post_score',]

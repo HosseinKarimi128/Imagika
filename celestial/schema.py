@@ -21,28 +21,31 @@ class UserInLogin(BaseModel):
     device_id: str
     
 class UserOutLogin(BaseModel):
-    device_id: int
+    device_id: str
     shown_name: str
+    posts: Optional[Dict]
     token: str
     refresh_token: str
+    magic: Optional[int]
 
 class UserProfileOut(BaseModel):
-    device_id: int
+    device_id: str
     shown_name: str
     posts: Optional[Dict]
     interacts: Optional[Dict]
+    magic: Optional[int]
 
 class UserInInteract(BaseModel):
     post_id: int
     isLike: bool
 
 class UserInCreatePost(BaseModel):
-    user_id: int
+    user_device_id: str
     shown_name: str
     prompt: str
     n_prompt: str
-    image_id: UUID
-    topic: str
+    image_id: str
+    topic_id: int
 
 class AdminInCreateTopic(BaseModel):
     title: str
@@ -55,8 +58,7 @@ Post Schemas -------------------------------------------------------------------
 class PostOut(BaseModel):
     id: int
     shown_name: str
-    draft: bool
-    images: List[UUID]
+    images: Dict
 
 class PostForInteract(BaseModel):
     id: int
@@ -65,17 +67,22 @@ class PostForInteract(BaseModel):
 class PostForDaVinchi(BaseModel):
     prompt: str
     n_prompt: Optional[str]
-    image: UUID
+    image: str
 
 class PostFromDaVinchi(BaseModel):
-    images: List[UUID]
+    images: Dict
 
 class PostForPublish(BaseModel):
     id: int
     image_number: int
 
+class PostPublishOut(BaseModel):
+    id: int
+    shown_name: str
+    image: str
+
 class TimelineOut(BaseModel):
-    queue: Optional[List[PostOut]]
+    queue: Optional[List]
 
 
 

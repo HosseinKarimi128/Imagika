@@ -19,12 +19,13 @@ class Post(models.Model):
     n_prompt: str = models.TextField(null=True, blank=True)
     uploaded_image: str = models.UUIDField(null=True, default=None, editable=False)
     generated_images: str = models.TextField(default = '{}')
-    image: str = models.UUIDField(null=True, default=None, editable=False)
+    image: str = models.CharField(max_length=100, null=True, default=None)
     draft: bool = models.BooleanField(default=True)
-    publish: date = models.DateField(null=True, auto_now=False, auto_now_add=False)
+    published_on: date = models.DateField(null=True, auto_now=False, auto_now_add=False)
     like_count: int = models.IntegerField(default=1)
     dislike_count: int = models.IntegerField(default=0)
     score: int = models.FloatField(default=0)
+    magic: int = models.IntegerField(default=0)
     interacted: str = models.TextField(default = '{}')
     updated: datetime = models.DateTimeField(auto_now=True, auto_now_add=False)
     created_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -33,7 +34,7 @@ class Post(models.Model):
     class Meta:
         verbose_name: str = "post"
         verbose_name_plural: str = "posts"
-        ordering: list = ["-publish", "prompt"]
+        ordering: list = ["-published_on", "prompt"]
 
     def __str__(self) -> str:
         return f"{self.prompt}"
@@ -46,7 +47,7 @@ class Post(models.Model):
         like_count = self.like_count
         self.like_count = like_count + 1
         self.update_post_score()
-
+        
     def add_dislike(self):
         dislike_count = self.dislike_count
         self.dislike_count = dislike_count + 1
@@ -55,7 +56,6 @@ class Post(models.Model):
     def update_post_score(self):
         liked_count = self.like_count
         disliked_count = self.dislike_count
-
         if liked_count + disliked_count == 0:
             score = 0
         else:
@@ -76,6 +76,7 @@ TOPIC MDOELS: ==================================================================
 #TODO: topic get list of titles. with just one start_on
 class Topic (models.Model):
     title: str = models.CharField(max_length=250, default=None)
+    description: str = models.CharField(max_length=250, default=None)
     created_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=True)
     starts_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     finished_on: datetime = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
@@ -91,7 +92,7 @@ class Topic (models.Model):
     def __str__(self) -> str:
         return f"{self.title}"
     def set_finished_on(self):
-        self.finished_on = self.starts_on + timedelta.days(7)
+        self.finished_on = self.starts_on + timedelta(days = 7)
 
 '''
 USER PROFILE MDOELS: ============================================================================

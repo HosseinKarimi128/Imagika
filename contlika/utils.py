@@ -14,7 +14,7 @@ def clean_db():
 
     # Delete all records from each table
     for table in tables:
-        if table[0].startswith("core"):
+        if table[0].startswith("celestial"):
             conn.execute(f"DELETE FROM {table[0]};")
 
     # Enable foreign key checks
