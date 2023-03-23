@@ -46,7 +46,7 @@ def get_davinchi() -> FastAPI:
 	app.add_middleware(CORSMiddleware, allow_origins = [str(origin) for origin in settings.ALLOWED_HOSTS] or ["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"],)
 	app.state.arbitrary_types_allowed = True
 	# Include all api endpoints
-	app.include_router(davinchi_router = APIRouter(), prefix=settings.API_V1_STR)
+	# app.include_router(davinchi_router = APIRouter(), prefix=settings.API_V1_STR)
 
 	# Mounts an independent web URL for Django WSGI application
 	app.mount(f"{settings.WSGI_APP_URL}", WSGIMiddleware(application))
