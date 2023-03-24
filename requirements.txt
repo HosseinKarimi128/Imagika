@@ -26,7 +26,6 @@ crashtest==0.4.1
 cryptography==39.0.2
 cssselect==1.2.0
 cssutils==2.6.0
-cupshelpers==1.0
 dbus-python==1.2.16
 decouple==0.0.7
 defer==1.0.6
