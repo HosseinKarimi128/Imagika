@@ -156,7 +156,7 @@ POST SERVICES ==========================================================
 #SERVICE ===
 @sync_to_async
 def on_get_topic() -> TopicOutList:
-    topics  = list(Topic.objects.filter(Q(active = True)).values('id','title'))
+    topics  = list(Topic.objects.filter(Q(active = True)).values('id','title','description'))
     return TopicOutList(items=topics)
 
 #SERVICE ===
@@ -223,7 +223,8 @@ TOPIC SERVICES ==========================================================
 def on_create_topic(admin_topic: AdminInCreateTopic) -> TopicOutInCreate:
     topic = Topic.objects.create(
         title=admin_topic.title,
-        starts_on = admin_topic.starts_on)
+        starts_on = admin_topic.starts_on,
+        description = admin_topic.description)
     topic.set_finished_on()
     return TopicOutInCreate(
         id = topic.id,

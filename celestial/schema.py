@@ -49,6 +49,7 @@ class UserInCreatePost(BaseModel):
 
 class AdminInCreateTopic(BaseModel):
     title: str
+    description: str
     starts_on: datetime
 
 
@@ -93,6 +94,7 @@ Topic Schemas ------------------------------------------------------------------
 class TopicOut(BaseModel):
     id: int
     title: str
+    description: str
 
 class TopicOutList(BaseModel):
     items: List[TopicOut]

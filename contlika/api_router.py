@@ -7,6 +7,7 @@ from celestial.endpoints import topic as topic_router
 from fastapi import APIRouter
 
 celestial_router = APIRouter()
+davinchi_router = APIRouter()
 
 celestial_router.include_router(user_router, prefix="/user", tags=["user"])
 celestial_router.include_router(post_router, prefix="/post", tags=["post"])

@@ -8,4 +8,4 @@ ENV DJANGO_SETTINGS_MODULE=contlika.settings
 ENV PYTHONUNBUFFERED=1
 RUN python manage.py collectstatic --no-input
 EXPOSE 8000
-CMD ["uvicorn", "contlika.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "contlika.asgi:celestial", "--host", "0.0.0.0", "--port", "8000"]
