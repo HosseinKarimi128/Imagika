@@ -7,4 +7,3 @@ ENV PYTHONPATH=/app
 ENV DJANGO_SETTINGS_MODULE=contlika.settings
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
-CMD ["uvicorn", "contlika.asgi:celestial", "--host", "0.0.0.0", "--port", "8000"]
