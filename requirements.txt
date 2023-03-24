@@ -1,7 +1,6 @@
 alembic==1.9.4
 amqp==2.6.1
 anyio==3.6.2
-apturl==0.5.2
 asgiref==3.6.0
 attrs==19.3.0
 backports.zoneinfo==0.2.1
