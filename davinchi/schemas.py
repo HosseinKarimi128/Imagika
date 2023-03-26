@@ -1,5 +1,4 @@
-from ast import Dict
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel
 
 class PostFromCelestial(BaseModel):
@@ -7,7 +6,7 @@ class PostFromCelestial(BaseModel):
     n_prompt: Optional[str]
     image: str
 
-class PostForSelestial(BaseModel):
+class PostForCelestial(BaseModel):
     images: Dict
 
 class DiffusersIn(BaseModel):
@@ -20,4 +19,4 @@ class DiffusersIn(BaseModel):
     image: str
 
 class DiffusersOut(BaseModel):
-    images: List
+    images: List[str]

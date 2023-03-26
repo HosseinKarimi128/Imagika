@@ -13,3 +13,6 @@ pytest==5.4.3
 requests==2.22.0
 python-multipart==0.0.6
 uvicorn
+imageio==2.26.1
+transformers==4.27.3
+torch==2.0.0
