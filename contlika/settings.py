@@ -81,10 +81,10 @@ DATABASES = {
        'default': {
            'ENGINE': 'django.db.backends.postgresql',
            'NAME': 'imagica-dev',
-           'USER': 'admin',
-           'PASSWORD': '123456aA;',
-           'HOST': 'db',
-           'PORT': 5432,
+           'USER': 'postgres',
+           'PASSWORD': 'postgres',
+           'HOST': '0.0.0.0',
+           'PORT': 5432
        }
    }
 
