@@ -22,7 +22,7 @@ services:
       - db
   api:
     build: .
-    command: bash -c "uvicorn contlika.asgi:celestial" 
+    command: bash -c "uvicorn contlika.asgi:celestial --port 8001" 
     volumes:
       - .:/code
     ports:
