@@ -13,27 +13,27 @@ class PostModelAdmin(admin.ModelAdmin):
 class Meta:
     model: Post = Post
 
-class TopicModelAdmin(admin.ModelAdmin):
-    list_display: list = ['title', 'description', 'created_on', 'starts_on', 'finished_on', 'active']
-    list_display_links: list = ['title']
-    list_filter: list = ['created_on', 'starts_on', 'finished_on', 'active']
-    search_fields: list = ['title', 'description']
-    list_per_page: int = 10
-    ordering: tuple = ('-starts_on', 'title')
+# class TopicModelAdmin(admin.ModelAdmin):
+#     list_display: list = ['title', 'description', 'created_on', 'starts_on', 'finished_on', 'active']
+#     list_display_links: list = ['title']
+#     list_filter: list = ['created_on', 'starts_on', 'finished_on', 'active']
+#     search_fields: list = ['title', 'description']
+#     list_per_page: int = 10
+#     ordering: tuple = ('-starts_on', 'title')
 
-    class Meta:
-        model: Topic = Topic
+#     class Meta:
+#         model: Topic = Topic
         
-class UserProfileModelAdmin(admin.ModelAdmin):
-    list_display: list = ['shown_name', 'device_id', 'magic']
-    list_display_links: list = ['shown_name']
-    list_filter: list = ['magic']
-    search_fields: list = ['shown_name']
-    list_per_page: int = 10
-    ordering: tuple = ('shown_name',)
+# class UserProfileModelAdmin(admin.ModelAdmin):
+#     list_display: list = ['shown_name', 'device_id', 'magic']
+#     list_display_links: list = ['shown_name']
+#     list_filter: list = ['magic']
+#     search_fields: list = ['shown_name']
+#     list_per_page: int = 10
+#     ordering: tuple = ('shown_name',)
 
-    class Meta:
-        model: UserProfile = UserProfile
+#     class Meta:
+#         model: UserProfile = UserProfile
 
 
 class configsModelAdmin(admin.ModelAdmin):
@@ -49,6 +49,6 @@ class Meta:
     model: configs = configs
 
 admin.site.register([Post], PostModelAdmin)
-admin.site.register([Topic], TopicModelAdmin)
-admin.site.register([UserProfile], UserProfileModelAdmin)
+# admin.site.register([Topic], TopicModelAdmin)
+# admin.site.register([UserProfile], UserProfileModelAdmin)
 admin.site.register([configs], configsModelAdmin)
