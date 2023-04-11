@@ -4,10 +4,12 @@ Django==4.1.7
 fastapi==0.95.0
 flax==0.6.7
 jax==0.4.6
-numpy==1.24.2
+numpy
 passlib==1.7.4
 Pillow==9.5.0
 pydantic==1.10.5
 PyJWT==2.6.0
 pytest==5.4.3
 requests==2.22.0
+uvicorn
+Psycopg2
