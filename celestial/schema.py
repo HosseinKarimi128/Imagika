@@ -23,7 +23,7 @@ class UserInLogin(BaseModel):
 class UserOutLogin(BaseModel):
     device_id: str
     shown_name: str
-    posts: Optional[Dict]
+    posts: Optional[Any]
     token: str
     refresh_token: str
     magic: Optional[int]
@@ -31,8 +31,8 @@ class UserOutLogin(BaseModel):
 class UserProfileOut(BaseModel):
     device_id: str
     shown_name: str
-    posts: Optional[Dict]
-    interacts: Optional[Dict]
+    posts: Optional[Any]
+    interacts: Optional[Any]
     magic: Optional[int]
 
 class UserInInteract(BaseModel):
@@ -59,7 +59,7 @@ Post Schemas -------------------------------------------------------------------
 class PostOut(BaseModel):
     id: int
     shown_name: str
-    images: Dict
+    images: List
 
 class PostForInteract(BaseModel):
     id: int
@@ -71,7 +71,7 @@ class PostForDaVinchi(BaseModel):
     image: str
 
 class PostFromDaVinchi(BaseModel):
-    images: Dict
+    images: List
 
 class PostForPublish(BaseModel):
     id: int

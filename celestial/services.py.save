@@ -42,11 +42,10 @@ def on_user_login(user: UserInLogin) -> UserOutLogin:
         auth_handler = Auth()
         access_token = auth_handler.encode_token(user.device_id)
         refresh_token = auth_handler.encode_refresh_token(user.device_id)
-        user_posts = list(Post.objects.filter(user_id=user.id).values())
         return UserOutLogin(
             device_id = user.device_id,
             shown_name = user.shown_name,
-            posts = user_posts,
+            posts = user.get_myPosts(),
             token =  access_token,
             refresh_token = refresh_token,
         )
@@ -55,16 +54,11 @@ def on_user_login(user: UserInLogin) -> UserOutLogin:
 @sync_to_async
 def on_get_profile(device_id) -> UserProfileOut:
     user = UserProfile.objects.get(device_id = device_id)
-    user_posts = list(Post.objects.filter(user_id=user.id).values())
-    logger.info('='*100)
-    logger.info(user_posts)
-    logger.info('='*100)
     return UserProfileOut(
         device_id = user.device_id,
         shown_name = user.shown_name,
-        posts = user_posts,
-        interacts = dict(user.interacted.values()),
-        magic = user.magic)
+        posts = user.get_myPosts(),
+        interacts = user.get_interacts())
 
 #SERVICE ===
 async def on_get_timeline(user:UserProfileOut) -> TimelineOut:
@@ -78,30 +72,50 @@ async def on_get_timeline(user:UserProfileOut) -> TimelineOut:
 # AXILLARY
 @sync_to_async
 def get_nonRepetitious_post_by_qeueu(queue:models.Model, user:UserProfileOut, batch_size: int) -> TimelineOut:
-	user_in_db = UserProfile.objects.get(device_id =user.device_id)
-	queue_in = list(queue.objects.order_by('id').all())
-	count = len(queue_in)
-	if count == 0: return []
-	num = 0
-	queue_out = []
-	while num < count and len(queue_out) < batch_size:
-		item_in = Post.objects.get(id = queue_in[num].post_id)
-		if item_in in user_in_db.interacted:
-			continue
-		else:
-			item = PostPublishOut(id = item_in.id, shown_name = item_in.shown_name, image =  item_in.image)
-			queue_out.append(item)
-			num += 1
-	return TimelineOut(queue = queue_out).__dict__["queue"]
+    queue_in = list(queue.objects.order_by('id').all())
+    count = len(queue_in)
+    if count == 0: return []
+    num = 0
+    queue_out = []
+    while num < count and len(queue_out) < batch_size:
+        item_in = Post.objects.get(id = queue_in[num].post_id)
+        if validate_nonRepetitious_post(user,item_in):
+            num += 1
+            continue
+        else:
+            item = PostPublishOut(
+                id = item_in.id,
+                shown_name = item_in.shown_name,
+                image =  item_in.image
+            )
+            queue_out.append(item)
+            num += 1
+    return TimelineOut(queue = queue_out).__dict__["queue"]
+
+# AXILLARY
+def validate_nonRepetitious_post(user:UserProfileOut, post: Post) -> bool:
+    post_interacted_users = post.get_interacted()
+    return True if str(user.device_id) in post_interacted_users.keys() else False
 
 #SERVICE ===
 @sync_to_async
 def on_post_interact_update(user: UserProfileOut, post_in: PostForInteract) -> None:
     user_in_db = UserProfile.objects.get(device_id = user.device_id)
+    #interacted_posts = user_in_db.get_interacts()
     post_in_db = Post.objects.get(id = post_in.id)
-    post_in_db.interacted.add(user_in_db)
-    user_in_db.interacted.add(post_in_db)
-    post_in_db.add_like() if post_in.isLike else post_in_db.add_dislike()
+    post_in_d.interacted.append(user_in_db)
+    #if interacted_posts is None:
+    #    interacted_posts = {}
+    
+    interacted_posts[post_in.id] = post_in.isLike
+    user_in_db.set_interacts(interacted_posts)
+    if post_in.isLike:
+        post_in_db.add_like()
+    else:   
+        post_in_db.add_dislike()
+    post_user_interacts = post_in_db.get_interacted()
+    post_user_interacts[user_in_db.device_id] = post_in.isLike
+    post_in_db.set_interacted(post_user_interacts)
     with transaction.atomic():
         user_in_db.save(update_fields=['interacted'])
         post_in_db.save(update_fields=['like_count','dislike_count','interacted','score'])
@@ -109,9 +123,11 @@ def on_post_interact_update(user: UserProfileOut, post_in: PostForInteract) -> N
 #AXILLARY
 @sync_to_async
 def has_user_interacted(user: UserProfileOut, post: Post) -> bool: 
-    user_in_db = UserProfile.objects.get(device_id = user.device_id)
-    post_in_db = Post.objects.get(id=post.id)
-    return (post_in_db in user_in_db.interacted)
+    user = UserProfile.objects.get(device_id = user.device_id)
+    interacted_posts = user.get_interacts()
+    if interacted_posts is None:
+        interacted_posts = {}
+    return (str(post.id) in interacted_posts.keys())
 
 #SERVICE OUT ===
 def update_queue() -> None:
@@ -152,10 +168,7 @@ def on_create_post(user_post: UserInCreatePost) -> PostOut:
     post_for_davinchi = PostForDaVinchi(prompt = user_post.prompt,
                                            n_prompt = user_post.n_prompt,
                                            image = user_post.image_id)
-    
     generated_images = generate_images(post_for_davinchi)
-    generated_images_list = []
-    for image in generated_images.images: generated_images_list.append(image) 
     post = Post(
         user_id = user.id,
         shown_name = user.shown_name,
@@ -163,19 +176,19 @@ def on_create_post(user_post: UserInCreatePost) -> PostOut:
         prompt=user_post.prompt,
         n_prompt = user_post.n_prompt,
         uploaded_image = user_post.image_id)
-    post.generated_images = generated_images_list
+    post.set_generated_images(generated_images.__dict__['images'])
     post.save()
-    return PostOut(id = post.id, shown_name = post.shown_name, images = post.generated_images)
+    return PostOut(id = post.id, shown_name = post.shown_name, images = post.get_generated_images())
 
 
 #APP CALL
 def generate_images(post:PostForDaVinchi) -> PostFromDaVinchi:
     # talking with DaVinchi
-    generated_images = []
+    generated_images_dict = {}
     #this generated_images_list is temporal and should be changed after DaVinchi Creation
-    generated_images.append(post.image)
-    generated_images.append(post.image)
-    return PostFromDaVinchi(images = generated_images)
+    generated_images_dict[1] = post.image
+    generated_images_dict[2] = post.image
+    return PostFromDaVinchi(images = generated_images_dict)
 
 #SERVICE ===
 @sync_to_async
@@ -183,14 +196,15 @@ def on_publish_post(post:PostForPublish) -> PostPublishOut:
     post_out = Post.objects.get(id = post.id)
     post_out.draft = False
     post_out.published_on = datetime.now()
-    post_out.image = post_out.generated_images[post.image_number]
+    post_out.image = post_out.get_generated_images()[str(post.image_number)]
     post_out.save(update_fields=['image', 'draft','published_on'])
     return PostPublishOut(
         id = post_out.id,
         shown_name = post_out.shown_name,
         image = post_out.image
     )
-# SIGNAL
+# 
+SIGNAL
 @receiver(post_save, sender=Post)
 def put_post_in_queue(sender, instance, created, update_fields, **kwargs) -> None:
     if not created and instance.topic_id != 0 and (

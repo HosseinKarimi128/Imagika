@@ -61,7 +61,7 @@ async def signup(request:UserInSignUp):
 async def login(request:UserInLogin):
     response = await on_user_login(request)
     if response:
-        return response.__dict__
+        return response
     else: 
         return HTTPException(status_code=404, detail='User not Existed')
 
@@ -83,9 +83,9 @@ def user_authorizer(credentials: HTTPAuthorizationCredentials = Security(securit
 async def get_user(user = Depends(user_authorizer)):
     try:
         return await user
-    except Exception:
-        logger.info(user.__dict__)
-        logger.error(Exception)
+    except Exception as e:
+        logger.info(user)
+        logger.exception(Exception)
         raise HTTPException(status_code=404, detail='user not found')
 
 @user.get('/get_timeline',status_code=200, response_model= TimelineOut)
