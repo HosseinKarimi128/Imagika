@@ -21,8 +21,8 @@ class TopicModelAdmin(admin.ModelAdmin):
     list_per_page: int = 10
     ordering: tuple = ('-starts_on', 'title')
 
-    class Meta:
-        model: Topic = Topic
+class Meta:
+    model: Topic = Topic
         
 class UserProfileModelAdmin(admin.ModelAdmin):
     list_display: list = ['shown_name', 'device_id', 'magic']
@@ -32,8 +32,8 @@ class UserProfileModelAdmin(admin.ModelAdmin):
     list_per_page: int = 10
     ordering: tuple = ('shown_name',)
 
-    class Meta:
-        model: UserProfile = UserProfile
+class Meta:
+    model: UserProfile = UserProfile
 
 
 class configsModelAdmin(admin.ModelAdmin):
