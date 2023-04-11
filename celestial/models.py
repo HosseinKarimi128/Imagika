@@ -79,12 +79,13 @@ class Topic (models.Model):
     objects = models.Manager()
 
     class Meta:
-        verbose_name: str = 'title'
-        verbose_name_plural: str = 'titles'
+        verbose_name: str = 'topic'
+        verbose_name_plural: str = 'topics'
         ordering: list = ['-starts_on', 'title']
 
     def __str__(self) -> str:
         return f'{self.title}'
+    
     def set_finished_on(self):
         self.finished_on = self.starts_on + timedelta(days = 7)
 
@@ -102,8 +103,8 @@ class UserProfile(models.Model):
     objects = models.Manager()
 
     class Meta:
-        verbose_name: str = 'shown_name'
-        verbose_name_plural: str = 'shown_names'
+        verbose_name: str = 'UserProfile'
+        verbose_name_plural: str = 'UserProfiles'
         ordering: list = ['shown_name']
 
     def __str__(self) -> str:
