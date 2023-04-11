@@ -1,7 +1,6 @@
 asgiref==3.6.0
 Django==4.1.7
 fastapi==0.95.0
-numpy
 passlib==1.7.4
 Pillow==9.5.0
 pydantic==1.10.5
