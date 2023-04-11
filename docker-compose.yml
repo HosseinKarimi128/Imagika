@@ -12,15 +12,14 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 123456aA;
-      POSTGRES_DB: imagica-dev
+      POSTGRES_DB: imagica-dev\
+    command: psql -U postgres; CREATE ROLE admin WITH LOGIN PASSWORD '123456aA;'
     volumes:
       - ./data:/var/lib/postgresql/data
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py makemigrations; python manage.py migrate; python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
