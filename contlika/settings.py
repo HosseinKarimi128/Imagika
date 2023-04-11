@@ -83,8 +83,8 @@ DATABASES = {
            'NAME': 'imagica-dev',
            'USER': 'admin',
            'PASSWORD': '123456aA;',
-           'HOST': 'localhost',
-           'PORT': '',
+           'HOST': 'db',
+           'PORT': '5432',
        }
    }
 
