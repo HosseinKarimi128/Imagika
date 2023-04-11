@@ -48,24 +48,27 @@
 #     depends_on:
 #       - web
 #       - api
-version: "3.9"
+version: '3.8'
 services:
   web:
-    build: .
+    build: ./app
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - ./app/:/usr/src/app/
     ports:
       - 8000:8000
+    env_file:
+      - ./.env.dev
     depends_on:
       - db
   db:
-    image: postgres:13
+    image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
-    ports:
-      - 5432:5432
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=hello_django_dev
 
 volumes:
   postgres_data:
