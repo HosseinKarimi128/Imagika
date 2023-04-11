@@ -13,10 +13,10 @@ POST MDOELS: ===================================================================
 '''
 
 class Post(models.Model):
-    user: Any = models.ForeignKey('UserProfile', default=1, null=True, on_delete=models.SET_DEFAULT, related_name="posts")
+    user: Any = models.ForeignKey('UserProfile', default=1, null=True, on_delete=models.SET_DEFAULT, related_name='posts')
     shown_name: str = models.CharField(max_length=100, default=None)
     topic: Any = models.ForeignKey('Topic', on_delete=models.SET_DEFAULT, default=0)
-    prompt: str = models.TextField(default="Create a post.")
+    prompt: str = models.TextField(default='Create a post.')
     n_prompt: str = models.TextField(null=True, blank=True)
     uploaded_image: str = models.UUIDField(null=True, default=None, editable=False)
     generated_images: List = ArrayField(models.UUIDField(), null=True)
@@ -32,12 +32,12 @@ class Post(models.Model):
     objects = models.Manager()
     
     class Meta:
-        verbose_name: str = "post"
-        verbose_name_plural: str = "posts"
-        ordering: list = ["-published_on", "prompt"]
+        verbose_name: str = 'post'
+        verbose_name_plural: str = 'posts'
+        ordering: list = ['-published_on', 'prompt']
 
     def __str__(self) -> str:
-        return f"{self.prompt}"
+        return f'{self.prompt}'
     
     def on_post_intract(self,is_like:bool):
         self.add_like() if is_like else self.add_dislike
@@ -79,12 +79,12 @@ class Topic (models.Model):
     objects = models.Manager()
 
     class Meta:
-        verbose_name: str = "title"
-        verbose_name_plural: str = "titles"
-        ordering: list = ["-starts_on", "title"]
+        verbose_name: str = 'title'
+        verbose_name_plural: str = 'titles'
+        ordering: list = ['-starts_on', 'title']
 
     def __str__(self) -> str:
-        return f"{self.title}"
+        return f'{self.title}'
     def set_finished_on(self):
         self.finished_on = self.starts_on + timedelta(days = 7)
 
@@ -102,12 +102,12 @@ class UserProfile(models.Model):
     objects = models.Manager()
 
     class Meta:
-        verbose_name: str = "shown_name"
-        verbose_name_plural: str = "shown_names"
-        ordering: list = ["shown_name"]
+        verbose_name: str = 'shown_name'
+        verbose_name_plural: str = 'shown_names'
+        ordering: list = ['shown_name']
 
     def __str__(self) -> str:
-        return f"{self.shown_name}"
+        return f'{self.shown_name}'
 
 '''
 QUEUE MDOELS: ===================================================================================
@@ -120,7 +120,7 @@ class ScoreQueue(models.Model):
 
     class Meta:
         abstract = True
-        ordering: list = ["update_date"]     
+        ordering: list = ['update_date']     
 
 class HighScoreQueue(ScoreQueue):
     pass
