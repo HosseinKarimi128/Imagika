@@ -1,6 +1,8 @@
 from django.contrib import admin 
 from celestial.models import *
 
+admin.site.site_header = 'IMAGIKA ADMIN'
+admin.site.site_title = 'IMAGIKA ADMIN'
 class PostModelAdmin(admin.ModelAdmin):
     list_display: list = ['shown_name','prompt', 'updated', 'created_on', 'published_on', 'draft']
     list_display_links: list = ['shown_name']
