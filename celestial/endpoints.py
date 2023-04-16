@@ -4,7 +4,6 @@ import uuid
 from fastapi import APIRouter, Depends, File, HTTPException, Security
 from fastapi.responses import FileResponse
 from django.contrib.auth.models import User
-from contlika.settings import STATIC_URL
 from celestial.models import *
 from celestial.schema import *
 from celestial.auth import Auth

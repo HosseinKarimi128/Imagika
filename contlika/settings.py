@@ -33,14 +33,14 @@ PROJECT_NAME = 'IMAGIKA'
 API_V1_STR: str = "/api/v1"
 WSGI_APP_URL: str = "/web"
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'celestial',
     'django.contrib.auth',
+    'django.contrib.postgres',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'celestial',
-    'davinchi'
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'contlika.wsgi.application'
 DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': os.environ.get('SQL_DATABASE'),
+        'USER': os.environ.get('SQL_USER'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD'),
+        'HOST': os.environ.get('SQL_HOST'),
+        'PORT': os.environ.get('SQL_PORT')
     }
 }
 
