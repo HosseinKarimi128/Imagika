@@ -80,7 +80,7 @@ class PostForPublish(BaseModel):
 class PostPublishOut(BaseModel):
     id: int
     shown_name: str
-    image: str
+    image: Optional[Any]
 
 class TimelineOut(BaseModel):
     queue: Optional[List]
