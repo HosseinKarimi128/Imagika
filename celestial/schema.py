@@ -50,6 +50,7 @@ class UserInCreatePost(BaseModel):
 class AdminInCreateTopic(BaseModel):
     title: str
     description: str
+    active: Optional[bool]
     starts_on: datetime
 
 

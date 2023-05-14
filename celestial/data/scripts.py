@@ -24,12 +24,13 @@ def login(device_id):
     return response.json()["token"]
 
 # function to create a new topic
-def create_topic(title, description, starts_on, token):
+def create_topic(title, description, starts_on, active, token):
     url = "http://116.202.62.198:8001/api/v1/topic/create/"
     payload = {
         "title": title,
         "description": description,
-        "starts_on": starts_on
+        "starts_on": starts_on,
+        "active": active
     }
     headers = {
         "Authorization": f"Bearer {token}"
@@ -91,7 +92,7 @@ with open("data.txt") as file:
         token = login(device_id)
         
         # create the topic
-        topic_id = create_topic(topic, 'sample desc', datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'), token)
+        topic_id = create_topic(topic, 'sample desc', datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'), True, token)
         
         # upload the image and retrieve the UUID
         # image_id = upload_image(image_file, token)

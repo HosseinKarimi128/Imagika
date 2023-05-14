@@ -213,7 +213,8 @@ def on_create_topic(admin_topic: AdminInCreateTopic) -> TopicOutInCreate:
     topic = Topic.objects.create(
         title=admin_topic.title,
         starts_on = admin_topic.starts_on,
-        description = admin_topic.description)
+        description = admin_topic.description,
+        active=admin_topic.active)
     topic.set_finished_on()
     return TopicOutInCreate(
         id = topic.id,
