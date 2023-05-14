@@ -107,7 +107,6 @@ def on_post_interact_update(user: UserProfileOut, post_in: PostForInteract) -> N
         post_in_db.save(update_fields=['like_count','dislike_count','interacted','score'])
 #TODO
 #AXILLARY
-@sync_to_async
 def has_user_interacted(user: UserProfileOut, post: Post) -> bool: 
     user_in_db = UserProfile.objects.get(device_id = user.device_id)
     post_in_db = Post.objects.get(id=post.id)
