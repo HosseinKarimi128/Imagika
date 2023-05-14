@@ -86,7 +86,7 @@ def get_nonRepetitious_post_by_qeueu(queue:models.Model, user:UserProfileOut, ba
 	queue_out = []
 	while num < count and len(queue_out) < batch_size:
 		item_in = Post.objects.get(id = queue_in[num].post_id)
-		if item_in in user_in_db.interacted:
+		if has_user_interacted(user_in_db,item_in):
 			continue
 		else:
 			item = PostPublishOut(id = item_in.id, shown_name = item_in.shown_name, image =  item_in.image)
@@ -111,7 +111,7 @@ def on_post_interact_update(user: UserProfileOut, post_in: PostForInteract) -> N
 def has_user_interacted(user: UserProfileOut, post: Post) -> bool: 
     user_in_db = UserProfile.objects.get(device_id = user.device_id)
     post_in_db = Post.objects.get(id=post.id)
-    return (post_in_db in user_in_db.interacted)
+    return (user_in_db.interacted.filter(id=post_in_db.id).exists())
 
 #SERVICE OUT ===
 def update_queue() -> None:
