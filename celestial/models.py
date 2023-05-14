@@ -24,7 +24,7 @@ class Post(models.Model):
     published_on: date = models.DateField(null=True, auto_now=False, auto_now_add=False)
     like_count: int = models.IntegerField(default=1)
     dislike_count: int = models.IntegerField(default=0)
-    image: str = models.CharField(max_length=100,default=None)
+    image: str = models.CharField(max_length=100,default=None, null=True)
     score: int = models.FloatField(default=0)
     magic: int = models.IntegerField(default=0)
     interacted: List = models.ManyToManyField('UserProfile')
